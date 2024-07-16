@@ -1,73 +1,118 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# NestJS Prisma Auth Demo
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This is a demo project that demonstrates user registration and authentication flow using NestJS, Prisma, JWT, and REST.
 
-## Description
+## Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- User Registration
+- User Authentication
+- JWT Token Generation
+- Prisma ORM Integration
+- Password Hashing and Validation
 
-## Installation
+## Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- Node.js (>= 12.x)
+- npm or yarn
+- Docker (for running the database)
+
+### Installation
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/imkxmx/nestjs-prisma-auth-demo.git
+    cd nestjs-prisma-auth-demo
+    ```
+
+2. Install dependencies:
+
+    ```bash
+    yarn install
+    ```
+
+3. Set up environment variables:
+
+    Rename the `.env.example` file to `.env` and update the database connection string if necessary.
+
+    ```bash
+    mv .env.example .env
+    ```
+
+4. Run Docker to start the database:
+
+    ```bash
+    docker-compose up -d
+    ```
+
+5. Initialize Prisma:
+
+    ```bash
+    npx prisma migrate dev
+    npx prisma generate
+    ```
+
+### Running the Application
+
+Start the NestJS application:
 
 ```bash
-$ yarn install
+yarn start:dev
 ```
 
-## Running the app
+The application will be available at `http://localhost:3000`.
 
-```bash
-# development
-$ yarn run start
+### Project Structure
 
-# watch mode
-$ yarn run start:dev
+- `src/`
+  - `main.ts`: Entry point of the application.
+  - `app.module.ts`: Root module of the application.
+  - `auth/`: Authentication module with controllers, services, and DTOs.
+  - `profile/`: Profile module for user profile management.
+  - `users/`: Users module for user management.
+  - `@common/`: Common services and interfaces.
+    - `services/`
+      - `argon2.service.ts`: Password hashing service.
+      - `redis.service.ts`: Redis service.
+      - `prisma.service.ts`: Prisma service.
+    - `interfaces/`
+      - `cache-service.interface.ts`: Cache service interface.
+      - `password-service.interface.ts`: Password service interface.
+  - `prisma/`
+    - `schema.prisma`: Prisma schema file.
+    - `migrations/`: Prisma migrations.
 
-# production mode
-$ yarn run start:prod
-```
+### Using Prisma
 
-## Test
+To interact with your database, use the Prisma CLI:
 
-```bash
-# unit tests
-$ yarn run test
+- To apply migrations:
 
-# e2e tests
-$ yarn run test:e2e
+    ```bash
+    npx prisma migrate dev
+    ```
 
-# test coverage
-$ yarn run test:cov
-```
+- To generate Prisma Client:
 
-## Support
+    ```bash
+    npx prisma generate
+    ```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- To open Prisma Studio:
 
-## Stay in touch
+    ```bash
+    npx prisma studio
+    ```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Authentication
 
-## License
+This project uses JWT for authentication. Upon successful login, a JWT token is returned. This token should be included in the `Authorization` header of subsequent requests.
 
-Nest is [MIT licensed](LICENSE).
+### License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
