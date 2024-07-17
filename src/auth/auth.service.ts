@@ -3,7 +3,6 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ConfigService } from '@nestjs/config';
-import { getAuthConfig } from './auth.config';
 import { AuthRefreshTokenService } from './auth-refresh-token.service';
 import {
   IAuthResult,
@@ -16,14 +15,12 @@ import { Argon2PasswordService } from '../common/services/argon2-password.servic
 
 @Injectable()
 export class AuthService {
-  private readonly config = getAuthConfig(this.configService);
-
   constructor(
     private readonly configService: ConfigService,
-    private usersService: UsersService,
-    private jwtService: JwtService,
-    private refreshTokenService: AuthRefreshTokenService,
-    private passwordService: Argon2PasswordService,
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+    private readonly refreshTokenService: AuthRefreshTokenService,
+    private readonly passwordService: Argon2PasswordService,
   ) {}
 
   async register({ username, password }: RegisterUserDto): Promise<User> {
@@ -102,16 +99,20 @@ export class AuthService {
   }
 
   private async getTokens({ username, sub }: IPayload): Promise<IAuthResult> {
-    const [accessToken, refreshToken] = await Promise.all(
-      this.config.jwtOptions.map((opts) =>
-        this.jwtService.sign(
-          {
-            sub,
-            username,
-          },
-          opts,
-        ),
-      ),
+   const accessToken = this.jwtService.sign(
+       {
+         sub,
+         username,
+       },
+       this.configService.get('jwt.access'),
+   );
+
+    const refreshToken = this.jwtService.sign(
+        {
+          sub,
+          username,
+        },
+        this.configService.get('jwt.refresh'),
     );
 
     return {

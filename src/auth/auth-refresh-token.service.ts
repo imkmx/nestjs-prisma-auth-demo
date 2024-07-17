@@ -21,7 +21,7 @@ export class AuthRefreshTokenService {
     await this.cacheService.set(
       this.getKey(userId),
       refreshToken,
-      this.configService.get('JWT_REFRESH_EXPIRES'),
+      this.configService.get('jwt.refresh.expiresIn'),
     );
   }
 
