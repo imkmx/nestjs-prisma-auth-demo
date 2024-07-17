@@ -7,19 +7,19 @@ import {
   ParseIntPipe,
   Patch,
   UseGuards,
-} from '@nestjs/common'
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
-} from '@nestjs/swagger'
-import { UsersService } from './users.service'
-import { plainToInstance } from 'class-transformer'
-import { UserDto } from './dto/user.dto'
-import { UpdateUserDto } from './dto/update-user.dto'
-import { UsersDto } from './dto/users.dto'
-import { JwtAccessGuard } from '../auth/guards/jwt-access.guard'
+} from '@nestjs/swagger';
+import { UsersService } from './users.service';
+import { plainToInstance } from 'class-transformer';
+import { UserDto } from './dto/user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersDto } from './dto/users.dto';
+import { JwtAccessGuard } from '../auth/guards/jwt-access.guard';
 
 @Controller('api/users')
 @UseGuards(JwtAccessGuard)
@@ -32,18 +32,18 @@ export class UsersController {
   @ApiOperation({ summary: 'Getting all users' })
   @ApiOkResponse({ type: UsersDto })
   async getAll(): Promise<UsersDto> {
-    const users = await this.usersService.findAll()
+    const users = await this.usersService.findAll();
     return plainToInstance(UsersDto, {
       data: users,
-    })
+    });
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Getting a user' })
   @ApiOkResponse({ type: UserDto })
   async getOne(@Param('id', ParseIntPipe) id: number): Promise<UserDto> {
-    const user = await this.usersService.findById(id)
-    return plainToInstance(UserDto, user)
+    const user = await this.usersService.findById(id);
+    return plainToInstance(UserDto, user);
   }
 
   @Patch(':id')
@@ -53,15 +53,15 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateUserDto,
   ): Promise<UserDto> {
-    const user = await this.usersService.update(id, dto)
-    return plainToInstance(UserDto, user)
+    const user = await this.usersService.update(id, dto);
+    return plainToInstance(UserDto, user);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deleting a user' })
   @ApiOkResponse({ type: UserDto })
   async remove(@Param('id', ParseIntPipe) id: number): Promise<UserDto> {
-    const user = await this.usersService.remove(id)
-    return plainToInstance(UserDto, user)
+    const user = await this.usersService.remove(id);
+    return plainToInstance(UserDto, user);
   }
 }

@@ -2,10 +2,10 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
-} from '@nestjs/common'
-import { PrismaService } from '../@common/services/prisma/prisma.service'
-import { UpdateUserDto } from './dto/update-user.dto'
-import {User} from "@prisma/client";
+} from '@nestjs/common';
+import { PrismaService } from '../common/services/prisma.service';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -16,10 +16,10 @@ export class UsersService {
       where: {
         name,
       },
-    })
+    });
 
     if (user) {
-      throw new ForbiddenException()
+      throw new ForbiddenException();
     }
 
     return this.prisma.user.create({
@@ -27,23 +27,23 @@ export class UsersService {
         name,
         password,
       },
-    })
+    });
   }
 
   async findById(id: number): Promise<User> {
-    return this.getUserOrThrow({ id })
+    return this.getUserOrThrow({ id });
   }
 
   async findByName(name: string): Promise<User> {
-    return this.getUserOrThrow({ name })
+    return this.getUserOrThrow({ name });
   }
 
   async findAll(): Promise<User[]> {
-    return this.prisma.user.findMany()
+    return this.prisma.user.findMany();
   }
 
   async update(id: number, data: UpdateUserDto): Promise<User> {
-    await this.getUserOrThrow({ id })
+    await this.getUserOrThrow({ id });
     return this.prisma.user.update({
       data: {
         name: data.name,
@@ -51,30 +51,30 @@ export class UsersService {
       where: {
         id,
       },
-    })
+    });
   }
 
   async remove(id: number): Promise<User> {
-    await this.getUserOrThrow({ id })
+    await this.getUserOrThrow({ id });
     return this.prisma.user.delete({
       where: {
         id,
       },
-    })
+    });
   }
 
   private async getUserOrThrow(where: {
-    id?: number
-    name?: string
+    id?: number;
+    name?: string;
   }): Promise<User> {
     const user = await this.prisma.user.findFirst({
       where,
-    })
+    });
 
     if (!user) {
-      throw new NotFoundException()
+      throw new NotFoundException();
     }
 
-    return user
+    return user;
   }
 }

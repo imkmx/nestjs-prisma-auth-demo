@@ -1,4 +1,4 @@
-import {ConfigService} from "@nestjs/config";
+import { ConfigService } from '@nestjs/config';
 
 export const getAuthConfig = (configService: ConfigService) => {
   return {
@@ -12,5 +12,5 @@ export const getAuthConfig = (configService: ConfigService) => {
         expiresIn: configService.get('JWT_REFRESH_EXPIRES'),
       },
     ],
-  }
-}
+  };
+};

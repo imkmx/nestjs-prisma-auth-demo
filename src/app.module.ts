@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common'
-import { AuthModule } from './auth/auth.module'
-import { UsersModule } from './users/users.module'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import {RedisModule} from '@nestjs-modules/ioredis'
-import { ProfileModule } from './profile/profile.module'
-import {PrismaModule} from "./@common/services/prisma/prisma.module";
+import { Module } from '@nestjs/common';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RedisModule } from '@nestjs-modules/ioredis';
+import { ProfileModule } from './profile/profile.module';
+import {PrismaModule} from "./common/modules/prisma.module";
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import {PrismaModule} from "./@common/services/prisma/prisma.module";
           host: configService.get('REDIS_HOST'),
           port: configService.get('REDIS_PORT'),
           keyPrefix: configService.get('REDIS_PREFIX'),
-        }
+        },
       }),
     }),
     AuthModule,
