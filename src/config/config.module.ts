@@ -5,11 +5,11 @@ import { DatabaseConfig } from './database.config';
 import { AppConfig } from './app.config';
 
 @Module({
-    imports: [
-        ConfigModule.forRoot({
-            isGlobal: true,
-            load: [AuthConfig, DatabaseConfig, AppConfig],
-        }),
-    ],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [AuthConfig, DatabaseConfig, AppConfig],
+    }),
+  ],
 })
 export class AppConfigModule {}

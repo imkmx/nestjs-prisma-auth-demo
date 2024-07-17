@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {RedisCacheService} from "../common/services/redis-cache.service";
-import {Argon2PasswordService} from "../common/services/argon2-password.service";
+import { RedisCacheService } from '../common/services/redis-cache.service';
+import { Argon2PasswordService } from '../common/services/argon2-password.service';
 
 @Injectable()
 export class AuthRefreshTokenService {

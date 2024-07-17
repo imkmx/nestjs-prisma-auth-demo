@@ -25,7 +25,7 @@ export class AuthService {
 
   async register({ username, password }: RegisterUserDto): Promise<User> {
     const hashedPassword = await this.passwordService.hash(password);
-    console.dir({hashedPassword}, {depth: null})
+    console.dir({ hashedPassword }, { depth: null });
     return this.usersService.createOne(username, hashedPassword);
   }
 
@@ -99,20 +99,20 @@ export class AuthService {
   }
 
   private async getTokens({ username, sub }: IPayload): Promise<IAuthResult> {
-   const accessToken = this.jwtService.sign(
-       {
-         sub,
-         username,
-       },
-       this.configService.get('jwt.access'),
-   );
+    const accessToken = this.jwtService.sign(
+      {
+        sub,
+        username,
+      },
+      this.configService.get('jwt.access'),
+    );
 
     const refreshToken = this.jwtService.sign(
-        {
-          sub,
-          username,
-        },
-        this.configService.get('jwt.refresh'),
+      {
+        sub,
+        username,
+      },
+      this.configService.get('jwt.refresh'),
     );
 
     return {

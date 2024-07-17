@@ -32,7 +32,7 @@ export class AuthController {
   @ApiOperation({ summary: 'User registration' })
   @ApiOkResponse({ type: UserDto })
   async register(@Body() dto: RegisterUserDto): Promise<UserDto> {
-    console.dir({dto}, {depth: null})
+    console.dir({ dto }, { depth: null });
     const user = await this.authService.register(dto);
     return plainToInstance(UserDto, user);
   }
