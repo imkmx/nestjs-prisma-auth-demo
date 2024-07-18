@@ -67,25 +67,6 @@ yarn start:dev
 
 The application will be available at `http://localhost:3000`.
 
-### Project Structure
-
-- `src/`
-  - `main.ts`: Entry point of the application.
-  - `app.module.ts`: Root module of the application.
-  - `auth/`: Authentication module with controllers, services, and DTOs.
-  - `profile/`: Profile module for user profile management.
-  - `users/`: Users module for user management.
-  - `@common/`: Common services and interfaces.
-    - `services/`
-      - `argon2.service.ts`: Password hashing service.
-      - `redis.service.ts`: Redis service.
-      - `prisma.service.ts`: Prisma service.
-    - `interfaces/`
-      - `cache-service.interface.ts`: Cache service interface.
-      - `password-service.interface.ts`: Password service interface.
-  - `prisma/`
-    - `schema.prisma`: Prisma schema file.
-    - `migrations/`: Prisma migrations.
 
 ### Using Prisma
 
