@@ -1,4 +1,10 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Request,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { JwtAccessGuard } from '../auth/guards/jwt-access.guard';
 import {
   ApiBearerAuth,
@@ -6,9 +12,11 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { ProfileDto } from './dto/profile.dto';
-import { plainToInstance } from 'class-transformer';
 import { UsersService } from '../users/users.service';
+import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
+import { User } from '@prisma/client';
+import { IAuthRequest } from '../auth/auth.interface';
+import { UserDto } from '../auth/dto/user.dto';
 
 @Controller('api/profile')
 @UseGuards(JwtAccessGuard)
@@ -19,12 +27,9 @@ export class ProfileController {
 
   @Get()
   @ApiOperation({ summary: 'Getting a profile' })
-  @ApiOkResponse({ type: ProfileDto })
-  async getProfile(@Request() req): Promise<ProfileDto> {
-    const user = await this.usersService.findById(req.user.id);
-    return plainToInstance(ProfileDto, {
-      userId: user.id,
-      username: user.name,
-    });
+  @ApiOkResponse({ type: UserDto })
+  @UseInterceptors(new TransformInterceptor(UserDto))
+  async getProfile(@Request() req: IAuthRequest): Promise<User> {
+    return this.usersService.findById(req.user.userId);
   }
 }
