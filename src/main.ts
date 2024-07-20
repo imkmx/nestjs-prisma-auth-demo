@@ -1,12 +1,20 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { winstonConfig } from './common/utils/logger';
+import { WinstonModule } from 'nest-winston';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: WinstonModule.createLogger(winstonConfig),
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -36,6 +44,6 @@ async function bootstrap() {
   const port = configService.get('app.port');
   await app.listen(port);
 
-  console.log(`App listening on port: ${port}`);
+  Logger.log(`App listening on port: ${port}`, 'Bootstrap');
 }
 bootstrap();
