@@ -15,7 +15,7 @@ export class UsersService {
     private passwordService: Argon2PasswordService,
   ) {}
 
-  async createOne(name: string, password: string): Promise<User> {
+  async createOne(name: string, password: string): Promise<Omit<User, 'password'>> {
     const user = await this.prisma.user.findUnique({
       where: {
         name,
@@ -32,6 +32,12 @@ export class UsersService {
       data: {
         name,
         password: hashedPassword,
+      },
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
   }
