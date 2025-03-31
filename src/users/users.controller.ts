@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  Post,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -19,6 +20,7 @@ import { UsersService } from './users.service';
 import { UserDto } from './dto/user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersDto } from './dto/users.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { JwtAccessGuard } from '../auth/guards/jwt-access.guard';
 import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
 import { User } from '@prisma/client';
@@ -29,6 +31,14 @@ import { User } from '@prisma/client';
 @ApiTags('Users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Post()
+  @ApiOperation({ summary: 'Creating a new user' })
+  @ApiOkResponse({ type: UserDto })
+  @UseInterceptors(new TransformInterceptor(UserDto))
+  async create(@Body() dto: CreateUserDto): Promise<User> {
+    return this.usersService.createOne(dto.name, dto.password);
+  }
 
   @Get()
   @ApiOperation({ summary: 'Getting all users' })

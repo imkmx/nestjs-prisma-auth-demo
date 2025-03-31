@@ -4,12 +4,16 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../common/services/prisma.service';
+import { Argon2PasswordService } from '../common/services/argon2-password.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private passwordService: Argon2PasswordService,
+  ) {}
 
   async createOne(name: string, password: string): Promise<User> {
     const user = await this.prisma.user.findUnique({
@@ -22,10 +26,12 @@ export class UsersService {
       throw new ForbiddenException();
     }
 
+    const hashedPassword = await this.passwordService.hash(password);
+
     return this.prisma.user.create({
       data: {
         name,
-        password,
+        password: hashedPassword,
       },
     });
   }
